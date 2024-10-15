@@ -11,6 +11,7 @@ import br.com.pupposoft.poc.monitoriamento.produto.domain.Produto;
 import br.com.pupposoft.poc.monitoriamento.produto.usecase.ObterProdutoUsecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import static net.logstash.logback.argument.StructuredArguments.kv;
 
 @Slf4j
 @CrossOrigin(origins = "*")//NOSONAR
@@ -24,6 +25,8 @@ public class ProdutoController {
 	@GetMapping("produtos/{id}")
 	public ProdutoJson obterProdutosPeloId(@PathVariable("id") Long id){
 		log.info("Start id={}", id);
+		
+		log.info("TEST {}", kv("SYSTEM_KEY", "SYSTEM VALUE")); 
 		
 		Produto produto = obterProdutoUsecase.obterPorId(id);
 		ProdutoJson produtoJson = new ProdutoJson(produto);
