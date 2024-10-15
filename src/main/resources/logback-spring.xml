@@ -1,28 +1,35 @@
 <configuration>
-	<appender name="LOGSTASH"
-		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-		<destination>localhost:50000</destination> <!-- Ajuste para o endereço do Logstash -->
-		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
-
-		<!-- Configuração opcional para adicionar campos personalizados -->
-		<customFields>{"app_name":"poc-produto-service","env":"production"}</customFields>
-
-		<!-- Configuração de reconexão -->
-		<reconnectionDelay>5000</reconnectionDelay>
-	</appender>
-
-	<!-- Configuração de um appender padrão para console -->
-	<appender name="CONSOLE"
-		class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %method:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - AAA - %method:%line - %msg%n</pattern>
 		</encoder>
 	</appender>
 
-	<!-- Nível de log -->
-	<root level="INFO">
-		<appender-ref ref="LOGSTASH" />
-		<appender-ref ref="CONSOLE" />
-	</root>
+	<springProfile name="!local">
+		<appender name="LOGSTASH"
+			class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+			<destination>localhost:50000</destination> <!-- Ajuste para o endereço do Logstash -->
+			<encoder class="net.logstash.logback.encoder.LogstashEncoder" >
+				<!-- Configuração opcional para adicionar campos personalizados -->
+				<customFields>{"app_name":"poc-produto-service","env":"${spring.profiles.active}"}</customFields>
+			</encoder>
+	
+	
+			<!-- Configuração de reconexão -->
+			<reconnectionDelay>5000</reconnectionDelay>
+		</appender>
+	</springProfile>
+
+    <!-- Nível de log global -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <!-- Adiciona LOGSTASH ao root se o profile for diferente de "local" -->
+    <springProfile name="!local">
+        <root level="INFO">
+            <appender-ref ref="LOGSTASH" />
+        </root>
+    </springProfile>
 	
 </configuration>
