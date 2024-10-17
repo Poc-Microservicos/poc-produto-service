@@ -1,5 +1,7 @@
 package br.com.pupposoft.poc.monitoriamento.produto.controller;
 
+import static net.logstash.logback.argument.StructuredArguments.kv;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +13,6 @@ import br.com.pupposoft.poc.monitoriamento.produto.domain.Produto;
 import br.com.pupposoft.poc.monitoriamento.produto.usecase.ObterProdutoUsecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import static net.logstash.logback.argument.StructuredArguments.kv;
 
 @Slf4j
 @CrossOrigin(origins = "*")//NOSONAR
@@ -24,14 +25,11 @@ public class ProdutoController {
 	
 	@GetMapping("produtos/{id}")
 	public ProdutoJson obterProdutosPeloId(@PathVariable("id") Long id){
-		log.info("Start id={}", id);
-		
-		log.info("TEST {}", kv("SYSTEM_KEY", "SYSTEM VALUE")); 
-		
 		Produto produto = obterProdutoUsecase.obterPorId(id);
-		ProdutoJson produtoJson = new ProdutoJson(produto);
-		
-		log.info("End produtoJson={}", produtoJson);
-		return produtoJson;
+		return new ProdutoJson(produto);
+	}
+	@GetMapping("produtos/test-key")
+	public void testKey(){
+		log.info("TEST {}", kv("SYSTEM_KEY", "SYSTEM VALUE")); 
 	}
 }
