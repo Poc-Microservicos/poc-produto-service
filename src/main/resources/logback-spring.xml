@@ -1,7 +1,7 @@
 <configuration>
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %method:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level - [poc-produto-service,%X{traceId:-},%X{spanId:-}] - %logger{36}.%method:%line - %msg%n</pattern>
 		</encoder>
 	</appender>
 
@@ -11,7 +11,7 @@
 			<destination>localhost:50000</destination> <!-- Ajuste para o endereço do Logstash -->
 			<encoder class="net.logstash.logback.encoder.LogstashEncoder" >
 				<!-- Configuração opcional para adicionar campos personalizados -->
-				<customFields>{"index":"poc", "app_name":"poc-produto-service","env":"${spring.profiles.active}"}</customFields>
+				<customFields>{"index":"poc", "app_name":"poc-produto-service","env":"${spring.profiles.active}, "trace_id":"%X{traceId:-}", "span_id":"%X{spanId:-}"}</customFields>
 			</encoder>
 
 			<reconnectionDelay>15000</reconnectionDelay>
