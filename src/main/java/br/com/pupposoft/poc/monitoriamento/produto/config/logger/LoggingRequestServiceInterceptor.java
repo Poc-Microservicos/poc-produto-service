@@ -14,6 +14,7 @@ import static br.com.pupposoft.poc.monitoriamento.produto.config.logger.LogField
 import static br.com.pupposoft.poc.monitoriamento.produto.config.logger.LogFields.RESPONSE_BODY;
 import static br.com.pupposoft.poc.monitoriamento.produto.config.logger.LogFields.RESPONSE_HEADERS;
 import static br.com.pupposoft.poc.monitoriamento.produto.config.logger.LogFields.RESPONSE_STATUS_CODE;
+import static br.com.pupposoft.poc.monitoriamento.produto.config.logger.LogFields.TRACE_ID;
 import static net.logstash.logback.argument.StructuredArguments.kv;
 
 import java.io.BufferedReader;
@@ -30,23 +31,25 @@ import java.util.stream.Collectors;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import brave.Tracer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 public class LoggingRequestServiceInterceptor implements HandlerInterceptor {
 
     private static final String HEADER_USER_AGENT = "User-Agent";
-
-    //@Autowired
-    //private Tracer tracer;
+    
+    private final Tracer tracer;
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
             final Object handler) throws Exception {
         request.setAttribute(EXEC_START.getKey(), LocalDateTime.now());
-        //request.setAttribute(TRACE_ID.getKey(), tracer.currentSpan().context().traceIdString());
+        request.setAttribute(TRACE_ID.getKey(), tracer.currentSpan().context().traceIdString());
         logRequestData(request, handler);
         return true;
     }
