@@ -6,21 +6,29 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum LogFields {
-  
-  CLASS("class"),
-  ELAPSED_TIME("elapsed_time"),
-  ERROR_CODE("error_code"),
-  ERROR_MESSAGE("error_message"),
-  EXCEPTION("exception"),
-  EXEC_END("exec_end"),
-  EXEC_START("exec_start"),
-  FEIGN_CLIENT_ENDPOINT("feign_client_endpoint"),
-  METHOD("method"),
-  REQUEST_PARAMS("request_params"),
-  STATUS_CODE("status_code"),
-  USER_AGENT("user_agent"),
-  TRACE_ID("trace_id"),
-  PARAMS("params");
+	TRACE_ID("trace_id"),
 
-  private String key;
+	EXEC_START("exec_start"),
+	EXEC_END("exec_end"),
+	ELAPSED_TIME("elapsed_time"),
+
+	ERROR_MESSAGE("error_message"),
+	EXCEPTION("exception"),
+
+	CLASS("class"),
+	CLASS_METHOD("class_method"),
+
+	REQUEST_PARAMS("request_params"),
+	REQUEST_HEADERS("request_headers"),
+	REQUEST_PATH("request_path"),
+	REQUEST_BODY("request_params"),
+	REQUEST_HTTP_METHOD("request_http_method"),
+	REQUEST_USER_AGENT("request_user_agent"),
+
+	RESPONSE_STATUS_CODE("response_status_code"),
+	RESPONSE_HEADERS("response_headers"),
+	RESPONSE_BODY("response_body"),
+	;
+
+	private String key;
 }
