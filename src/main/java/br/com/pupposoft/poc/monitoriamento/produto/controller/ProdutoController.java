@@ -25,6 +25,9 @@ public class ProdutoController {
 	
 	@GetMapping("produtos/{id}")
 	public ProdutoJson obterProdutosPeloId(@PathVariable("id") Long id){
+		
+		log.info("TESTE id={}", id);
+		
 		Produto produto = obterProdutoUsecase.obterPorId(id);
 		return new ProdutoJson(produto);
 	}
